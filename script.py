@@ -21,10 +21,11 @@ def main():
     now = datetime.now()
     date = str(date.month) + "/" + str(date.year)
     for member in spotify_family:
-        member = venmo_client.user.get_user_by_username(member)
+        user = venmo_client.user.get_user_by_username(os.environ.get(member))
         description = "spotify {date}".format(date = date)
         try:
-            venmo_client.payment.request_money(amount, description, target_user_id = member, privacy_setting=PaymentPrivacy.PRIVATE)
+            venmo_client.payment.request_money(amount = amount, note = description, target_user_id = user.id, privacy_setting=PaymentPrivacy.PRIVATE)
+            print("Success: {member}".format(member = member))
         except Exception as e:
                 print(e)
 
