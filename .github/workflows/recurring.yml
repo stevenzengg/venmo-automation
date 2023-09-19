@@ -1,0 +1,42 @@
+# <workflow-name>.yml
+
+name: Run Recurring Venmo
+
+on:
+  schedule:
+    # 5/6pm EDT on the 10th of the month.
+    - cron: "0 10 14 * *"
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: Install dependencies
+        run: |
+          pip install pipenv
+          pipenv install
+      - name: Run script 
+        # https://pipenv.pypa.io/en/latest/advanced/#automatic-loading-of-env; this is somewhat silly but I wanted to finish quick
+        run: |
+          echo VENMO_ACCESS_TOKEN=$VENMO_ACCESS_TOKEN >> .env
+          echo SREYA=$SREYA >> .env
+          echo JERRY=$JERRY >> .env
+          echo SAHIL=$SAHIL >> .env
+          echo ROHAN=$ROHAN >> .env
+          echo PRACHI=$PRACHI >> .env
+          pipenv run python main.py
+        env:
+          VENMO_ACCESS_TOKEN: ${{ secrets.VENMO_ACCESS_TOKEN }}
+          SREYA: ${{ secrets.SREYA}}
+          JERRY: ${{ secrets.JERRY}}
+          SAHIL: ${{ secrets.SAHIL}}
+          ROHAN: ${{ secrets.ROHAN}}
+          PRACHI: ${{ secrets.PRACHI}}
+          
