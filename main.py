@@ -15,11 +15,9 @@ def main():
 
     venmo_client = Client(access_token=access_token)
     spotify_family = ["JERRY", "PRACHI", "SAHIL", "ROHAN", "SREYA"]
-    successful_requests = []
-    expected_requests = len(spotify_family)
     amount = 3.01
     now = datetime.now()
-    date = str(date.month) + "/" + str(date.year)
+    date = str(now.month) + "/" + str(now.year)
     for member in spotify_family:
         user = venmo_client.user.get_user_by_username(os.environ.get(member))
         description = "spotify {date}".format(date = date)
