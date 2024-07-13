@@ -15,7 +15,7 @@ def main():
 
     venmo_client = Client(access_token=access_token)
     spotify_family = ["JERRY", "PRACHI", "SAHIL", "ROHAN", "SREYA"]
-    amount = 3.34
+    amount = 3.54
     now = datetime.now()
     date = str(now.month) + "/" + str(now.year)
     for member in spotify_family:
