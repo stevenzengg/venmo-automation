@@ -50,7 +50,7 @@ def main():
     user = venmo_client.user.get_user_by_username(os.environ.get("JAKE"))
     try:
         time.sleep(random.uniform(5, 10))  # jittered delay
-        venmo_client.payment.pay_money(amount = 1.99, note = icloud_description, target_user_id = user.id, privacy_setting=PaymentPrivacy.PRIVATE)
+        venmo_client.payment.send_money(amount = 1.99, note = icloud_description, target_user_id = user.id, privacy_setting=PaymentPrivacy.PRIVATE)
         print("Success: {member}".format(member = member))
     except Exception as e:
             print(e)
