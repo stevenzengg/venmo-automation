@@ -4,6 +4,8 @@ import os
 from venmo_api import Client, PaymentPrivacy
 import datetime
 from datetime import datetime
+import time
+import random
 
 TOKEN_KEY = 'VENMO_ACCESS_TOKEN'
 
@@ -28,6 +30,7 @@ def main():
     for member in spotify_family:
         user = venmo_client.user.get_user_by_username(os.environ.get(member))
         try:
+            time.sleep(random.uniform(5, 10))  # jittered delay
             venmo_client.payment.request_money(amount = amount, note = description, target_user_id = user.id, privacy_setting=PaymentPrivacy.PRIVATE)
             print("Success: {member}".format(member = member))
         except Exception as e:
@@ -36,6 +39,7 @@ def main():
     for member in friendship_family:
         user = venmo_client.user.get_user_by_username(os.environ.get(member))
         try:
+            time.sleep(random.uniform(5, 10))  # jittered delay
             venmo_client.payment.request_money(amount = friendship_amount, note = friendship_description, target_user_id = user.id, privacy_setting=PaymentPrivacy.PRIVATE)
             print("Success: {member}".format(member = member))
         except Exception as e:
@@ -45,8 +49,10 @@ def main():
     icloud_description = "icloud dues for {date}".format(date = date)
     user = venmo_client.user.get_user_by_username(os.environ.get("JAKE"))
     try:
+        time.sleep(random.uniform(5, 10))  # jittered delay
         venmo_client.payment.pay_money(amount = 1.99, note = icloud_description, target_user_id = user.id, privacy_setting=PaymentPrivacy.PRIVATE)
         print("Success: {member}".format(member = member))
     except Exception as e:
             print(e)
+
 main()
