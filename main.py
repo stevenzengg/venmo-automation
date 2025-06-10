@@ -14,17 +14,39 @@ def main():
         raise ValueError('[!] EVERYTHING IS BROKEN WE CANT GET ACCESSS AHHHHHH')
 
     venmo_client = Client(access_token=access_token)
-    spotify_family = ["JERRY", "PRACHI", "SAHIL", "ROHAN", "SREYA"]
     amount = 3.54
+    friendship_amount = 1
     now = datetime.now()
     date = str(now.month) + "/" + str(now.year)
+    spotify_family = ["JERRY", "PRACHI", "SAHIL", "ROHAN", "SREYA"]
+    friendship_family = ["JAKE", "SARAH"]
+    friendship_description = "friendship dues for {date}".format(date = date)
+    description = "spotify {date}".format(date = date)
+    
+
+
     for member in spotify_family:
         user = venmo_client.user.get_user_by_username(os.environ.get(member))
-        description = "spotify {date}".format(date = date)
         try:
             venmo_client.payment.request_money(amount = amount, note = description, target_user_id = user.id, privacy_setting=PaymentPrivacy.PRIVATE)
             print("Success: {member}".format(member = member))
         except Exception as e:
                 print(e)
 
+    for member in friendship_family:
+        user = venmo_client.user.get_user_by_username(os.environ.get(member))
+        try:
+            venmo_client.payment.request_money(amount = friendship_amount, note = friendship_description, target_user_id = user.id, privacy_setting=PaymentPrivacy.PRIVATE)
+            print("Success: {member}".format(member = member))
+        except Exception as e:
+                print(e)
+    
+    # icloud payment
+    icloud_description = "icloud dues for {date}".format(date = date)
+    user = venmo_client.user.get_user_by_username(os.environ.get("JAKE"))
+    try:
+        venmo_client.payment.pay_money(amount = 1.99, note = icloud_description, target_user_id = user.id, privacy_setting=PaymentPrivacy.PRIVATE)
+        print("Success: {member}".format(member = member))
+    except Exception as e:
+            print(e)
 main()

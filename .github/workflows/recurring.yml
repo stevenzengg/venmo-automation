@@ -33,3 +33,5 @@ jobs:
           SAHIL: ${{ vars.SAHIL}}
           ROHAN: ${{ vars.ROHAN}}
           PRACHI: ${{ vars.PRACHI}}
+          JAKE: ${{ vars.JAKE}}
+          SARAH: ${{ vars.SARAH}}
