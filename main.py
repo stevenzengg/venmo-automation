@@ -53,6 +53,13 @@ def main():
         venmo_client.payment.send_money(amount = 1.99, note = icloud_description, target_user_id = user.id, privacy_setting=PaymentPrivacy.PRIVATE)
         print("Success: {member}".format(member = member))
     except Exception as e:
+        if "not enough balance" in str(e).lower():
+            # Fallback: pay from bank instead
+            try:
+                venmo_client.payment.send_money(amount = 1.99, note=icloud_description, target_user_id=user.id, funding_source_id="4109404534212018514", privacy_setting=PaymentPrivacy.PRIVATE)
+                print("Success: {member} (bank fallback)".format(member=member))
+            except Exception as bank_error:
+                print("Bank fallback failed:", bank_error)
+        else:
             print(e)
-
 main()
