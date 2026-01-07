@@ -23,6 +23,7 @@ def main():
     youtube_description = "youtube premium {date}".format(date = date)
 
     for member in youtube_family:
+        print(os.environ.get(member))
         user = venmo_client.user.get_user_by_username(os.environ.get(member))
         try:
             time.sleep(random.uniform(5, 10))  # jittered delay
