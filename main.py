@@ -18,12 +18,16 @@ def main():
     venmo_client = Client(access_token=access_token)
     amount = 3.54
     friendship_amount = 1
+    youtube_amount = 4.07
     now = datetime.now()
     date = str(now.month) + "/" + str(now.year)
     spotify_family = ["JERRY", "PRACHI", "SAHIL", "ROHAN", "SREYA"]
     friendship_family = ["JAKE", "SARAH"]
+    youtube_family = ["PATO"]
     friendship_description = "friendship dues for {date}".format(date = date)
     description = "spotify {date}".format(date = date)
+    youtube_description = "youtube premium {date}".format(date = date)
+
     
 
 
@@ -41,6 +45,15 @@ def main():
         try:
             time.sleep(random.uniform(5, 10))  # jittered delay
             venmo_client.payment.request_money(amount = friendship_amount, note = friendship_description, target_user_id = user.id, privacy_setting=PaymentPrivacy.PRIVATE)
+            print("Success: {member}".format(member = member))
+        except Exception as e:
+                print(e)
+
+    for member in youtube_family:
+        user = venmo_client.user.get_user_by_username(os.environ.get(member))
+        try:
+            time.sleep(random.uniform(5, 10))  # jittered delay
+            venmo_client.payment.request_money(amount = youtube_amount, note = youtube_description, target_user_id = user.id, privacy_setting=PaymentPrivacy.PRIVATE)
             print("Success: {member}".format(member = member))
         except Exception as e:
                 print(e)
