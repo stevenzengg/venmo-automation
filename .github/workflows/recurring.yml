@@ -35,3 +35,4 @@ jobs:
           PRACHI: ${{ vars.PRACHI}}
           JAKE: ${{ vars.JAKE}}
           SARAH: ${{ vars.SARAH}}
+          PATO: ${{ vars. PATO}}
