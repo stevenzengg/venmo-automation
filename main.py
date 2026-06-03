@@ -17,14 +17,17 @@ def main():
 
     venmo_client = Client(access_token=access_token)
     amount = 3.54
-    friendship_amount = 1
     youtube_amount = 4.07
     now = datetime.now()
-    date = str(now.month) + "/" + str(now.year)
+    # Optionally override month/year via env (set by manual workflow_dispatch).
+    # Each falls back to today's value for scheduled/cron runs.
+    month_override = os.environ.get("PAYMENT_MONTH")
+    year_override = os.environ.get("PAYMENT_YEAR")
+    month = month_override.strip() if month_override and month_override.strip() else str(now.month)
+    year = year_override.strip() if year_override and year_override.strip() else str(now.year)
+    date = month + "/" + year
     spotify_family = ["JERRY", "PRACHI", "SAHIL", "ROHAN", "SREYA"]
-    friendship_family = ["JAKE", "SARAH"]
     youtube_family = ["PATO"]
-    friendship_description = "friendship dues for {date}".format(date = date)
     description = "spotify {date}".format(date = date)
     youtube_description = "youtube premium {date}".format(date = date)
 
@@ -36,15 +39,6 @@ def main():
         try:
             time.sleep(random.uniform(5, 10))  # jittered delay
             venmo_client.payment.request_money(amount = amount, note = description, target_user_id = user.id, privacy_setting=PaymentPrivacy.PRIVATE)
-            print("Success: {member}".format(member = member))
-        except Exception as e:
-                print(e)
-
-    for member in friendship_family:
-        user = venmo_client.user.get_user_by_username(os.environ.get(member))
-        try:
-            time.sleep(random.uniform(5, 10))  # jittered delay
-            venmo_client.payment.request_money(amount = friendship_amount, note = friendship_description, target_user_id = user.id, privacy_setting=PaymentPrivacy.PRIVATE)
             print("Success: {member}".format(member = member))
         except Exception as e:
                 print(e)
