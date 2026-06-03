@@ -1,0 +1,37 @@
+# keepalive.yml
+#
+# GitHub disables scheduled workflows after 60 days of no repository
+# activity, which forces you to manually re-enable them. This workflow
+# pushes an empty commit on a schedule to keep the repo "active" so the
+# recurring Venmo workflow never gets auto-disabled.
+
+name: Keepalive
+
+on:
+  schedule:
+    # Every 14 days (1st and 15th of the month) — comfortably under the
+    # 60-day inactivity limit.
+    - cron: "0 12 1,15 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Push then erase empty commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Push an empty commit — this registers repo activity and resets
+          # GitHub's 60-day inactivity timer.
+          git commit --allow-empty -m "chore: keepalive"
+          git push
+          # Then erase it so the branch history is left unchanged. The
+          # force-push is itself activity, so the workflow stays enabled.
+          git reset --hard HEAD~1
+          git push --force
