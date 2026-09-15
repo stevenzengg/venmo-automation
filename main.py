@@ -51,22 +51,5 @@ def main():
             print("Success: {member}".format(member = member))
         except Exception as e:
                 print(e)
-    
-    # icloud payment
-    icloud_description = "icloud dues for {date}".format(date = date)
-    user = venmo_client.user.get_user_by_username(os.environ.get("JAKE"))
-    try:
-        time.sleep(random.uniform(5, 10))  # jittered delay
-        venmo_client.payment.send_money(amount = 1.99, note = icloud_description, target_user_id = user.id, privacy_setting=PaymentPrivacy.PRIVATE)
-        print("Success: {member}".format(member = member))
-    except Exception as e:
-        if "not enough balance" in str(e).lower():
-            # Fallback: pay from bank instead
-            try:
-                venmo_client.payment.send_money(amount = 1.99, note=icloud_description, target_user_id=user.id, funding_source_id=os.environ.get("PAYMENT_ID_1"), privacy_setting=PaymentPrivacy.PRIVATE)
-                print("Success: {member} (bank fallback)".format(member=member))
-            except Exception as bank_error:
-                print("Bank fallback failed:", bank_error)
-        else:
-            print(e)
+
 main()
